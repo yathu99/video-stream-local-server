@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Video Streaming With Node</title>
+        <script src="/frontend.js">
+        </script>
+        <style>
+            body {
+                margin: 5% auto;
+                max-width: 100%;/*
+                background-color: rgb(14, 14, 14);
+                padding-top: 10%;*/
+            }
+            table {
+            border-collapse: collapse;
+            width: 70%;
+        }
+
+        td,
+        th {
+            border: 1px solid #000000;
+            text-align: left;
+            padding: 8px;
+        }
+        </style>
+    </head>
+    <script type="text/javascript" charset="utf-8">
+
+        fetch('/listing')
+            .then(function (response) {
+                return response.json();
+            }).then(function (apiJsonData) {
+                renderDataInTheTable(apiJsonData);
+            })
+
+        function renderDataInTheTable(todos) {
+            const mytable = document.getElementById("html-data-table");
+            todos.forEach(todo => {
+                let newRow = document.createElement("tr");
+                Object.values(todo).forEach((value) => {
+                    let cell = document.createElement("td");
+                    if(isNaN(value)){
+                        let anchorElem = document.createElement("a");
+                        anchorElem.innerText=value
+                        anchorElem.href=`/video/${value}`
+                        cell.appendChild(anchorElem);
+                    }
+                    else{
+                        cell.innerText=value;
+                    }
+                    newRow.appendChild(cell);
+                })
+                mytable.appendChild(newRow);
+            });
+        }
+    </script>
+    <body>
+        <button onclick="getFiles()">GET Files</button>
+        <div name="content">
+            SHOW FILE NAME
+        </div>
+        <div id="data-table">
+            <table id="html-data-table">
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                </tr>
+            </table>    
+        </div>
+        <!-- <video id="videoPlayer" controls muted="muted" autoplay>
+            <source src="/video" type="video/mp4" />
+        </video> -->
+    </body>
+</html>
